@@ -22,20 +22,19 @@ public class Main {
 
 //        UserCreationTest userCreationTest = new UserCreationTest();
 //        userCreationTest.setUp();
-//        User user = userCreationTest.createUser();
+//        userCreationTest.createUser();
+//        userCreationTest.tearDown();
 
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        User user = new User();
+        user.readUserData();
 
-        ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("useAutomationExtension", false);
-        options.addArguments("--disable-extensions");
+//        userCreationTest.tearDown();
 
-        WebDriver driver = new ChromeDriver(options);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.get("https://2captcha.com/demo/recaptcha-v3");
+        UserLoginTest userLoginTest = new UserLoginTest();
+        userLoginTest.setUp();
+        userLoginTest.loginWithCreatedUser();
 
-        WebElement check = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/button[@data-action='demo_action']")));
-        check.click();
+
 
 
 

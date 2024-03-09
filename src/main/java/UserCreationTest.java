@@ -73,10 +73,9 @@ public class UserCreationTest{
     }
 
     @Test
-    public User createUser(){
+    public void createUser() {
 
         User user = new User();
-
         driver.get("https://demowebshop.tricentis.com/");
         WebElement registerButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='ico-register']")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", registerButton);
@@ -96,24 +95,14 @@ public class UserCreationTest{
         user.setEmail(emailString);
         user.setPassword("slaptas");
 
+        user.saveUserData(user);
+
         driver.findElement(By.id("register-button")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='button' and @value='Continue']"))).click();
 
-        return user;
     }
 
-    public void saveUserData(User user){
-        try(FileWriter fileWriter = new FileWriter("userData.txt", false)){
-            fileWriter.write(user.getEmail() + "\n" + user.getPassword() );
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
 
-    public User readUserData(){
-        User user = new User();
-
-    }
 
     @AfterEach
     public void tearDown(){

@@ -17,7 +17,7 @@
         <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-java</artifactId>
-        <version>4.17.0</version>
+        <version>4.18.1</version>
         </dependency>
 
         <dependency>
@@ -41,22 +41,9 @@
       <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
+          <version>5.9.0</version>
           <scope>compile</scope>
       </dependency>
-      <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
-          <scope>compile</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
-          <scope>compile</scope>
-      </dependency>
-
 
   </dependencies>
 </project>
