@@ -41,6 +41,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Scanner;
 
@@ -149,17 +151,18 @@ public class UserLoginTest {
     }
 
     //read file data1.txt and return the content
-    public String readData(String fileName){
-        String content = "";
-        try{
-            Scanner scanner = new Scanner(new File(fileName));
-            while(scanner.hasNextLine()){
-                content += scanner.nextLine() + "\n";
+    public String readData(String fileName) {
+        StringBuilder content = new StringBuilder();
+        // Use try-with-resources to ensure the InputStream is closed after use
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+             Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name())) {
+            while (scanner.hasNextLine()) {
+                content.append(scanner.nextLine()).append("\n");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return content;
+        return content.toString();
     }
 
     @Test
