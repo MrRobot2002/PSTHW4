@@ -95,12 +95,12 @@ public class UserLoginTest {
 
         for(String item : items){
             if(item.equals("3rd Album")) {
-                driver.findElement(By.xpath("//h2/a[text()='" + item + "']")).click();
-                driver.findElement(By.xpath("//div/input[@id='add-to-cart-button-53']")).click();
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2/a[text()='" + item + "']"))).click();
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/input[@id='add-to-cart-button-53']"))).click();
             }
             else{
-                driver.findElement(By.xpath("//h2/a[text()='" + item + "']")).click();
-                driver.findElement(By.xpath("//div/input[@id='add-to-cart-button-51']"));
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2/a[text()='" + item + "']"))).click();
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/input[@id='add-to-cart-button-51']"))).click();
             }
 
             try {
@@ -164,11 +164,11 @@ public class UserLoginTest {
 
     @Test
     public void Test1(){
-        loginWithCreatedUser("data1.txt");
+        loginWithCreatedUser("data/data1.txt");
     }
     @Test
     public void Test2(){
-        loginWithCreatedUser("data2.txt");
+        loginWithCreatedUser("data/data2.txt");
     }
 
 
