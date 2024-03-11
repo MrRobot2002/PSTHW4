@@ -40,7 +40,11 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Scanner;
 
@@ -62,7 +66,7 @@ public class UserLoginTest {
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @AfterEach
@@ -88,19 +92,24 @@ public class UserLoginTest {
         driver.findElement(By.xpath("//div[@class='listbox']/ul[@class='list']/li/a[@href='/digital-downloads']")).click();
 
         String content = readData(fileName);
+        System.out.println("Content: \n" + content);
 
         String[] items = content.split("\n");
+        System.out.println("Items:");
 
         String previousPage = driver.getCurrentUrl();
 
         for(String item : items){
+
+            System.out.println("'" + item + "'");
+
             if(item.equals("3rd Album")) {
-                driver.findElement(By.xpath("//h2/a[text()='" + item + "']")).click();
-                driver.findElement(By.xpath("//div/input[@id='add-to-cart-button-53']")).click();
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2/a[text()='" + item + "']"))).click();
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/input[@id='add-to-cart-button-53']"))).click();
             }
             else{
-                driver.findElement(By.xpath("//h2/a[text()='" + item + "']")).click();
-                driver.findElement(By.xpath("//div/input[@id='add-to-cart-button-51']"));
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2/a[text()='" + item + "']"))).click();
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/input[@id='add-to-cart-button-51']"))).click();
             }
 
             try {
@@ -149,17 +158,20 @@ public class UserLoginTest {
     }
 
     //read file data1.txt and return the content
-    public String readData(String fileName){
-        String content = "";
-        try{
-            Scanner scanner = new Scanner(new File(fileName));
-            while(scanner.hasNextLine()){
-                content += scanner.nextLine() + "\n";
+    public String readData(String resourcePath) {
+        StringBuilder contentBuilder = new StringBuilder();
+        // Use the current thread's class loader to get the resource as a stream
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                contentBuilder.append(line).append("\n");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+            return "Failed to read file: " + resourcePath;
         }
-        return content;
+        return contentBuilder.toString();
     }
 
     @Test

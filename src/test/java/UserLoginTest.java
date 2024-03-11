@@ -92,12 +92,17 @@ public class UserLoginTest {
         driver.findElement(By.xpath("//div[@class='listbox']/ul[@class='list']/li/a[@href='/digital-downloads']")).click();
 
         String content = readData(fileName);
+        System.out.println("Content: \n" + content);
 
         String[] items = content.split("\n");
+        System.out.println("Items:");
 
         String previousPage = driver.getCurrentUrl();
 
         for(String item : items){
+
+            System.out.println("'" + item + "'");
+
             if(item.equals("3rd Album")) {
                 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2/a[text()='" + item + "']"))).click();
                 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/input[@id='add-to-cart-button-53']"))).click();
@@ -155,25 +160,27 @@ public class UserLoginTest {
     //read file data1.txt and return the content
     public String readData(String resourcePath) {
         StringBuilder contentBuilder = new StringBuilder();
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        // Use the current thread's class loader to get the resource as a stream
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 contentBuilder.append(line).append("\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return "Failed to read file: " + resourcePath;
         }
         return contentBuilder.toString();
     }
 
     @Test
     public void Test1(){
-        loginWithCreatedUser("data/data1.txt");
+        loginWithCreatedUser("data1.txt");
     }
     @Test
     public void Test2(){
-        loginWithCreatedUser("data/data2.txt");
+        loginWithCreatedUser("src/main/resources/data2.txt");
     }
 
 
