@@ -28,14 +28,20 @@
 //          3rd Album Music 2
 //          3rd Album
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.time.Duration;
+import java.util.Scanner;
 
 public class UserLoginTest {
 
@@ -55,9 +61,15 @@ public class UserLoginTest {
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
-    public void loginWithCreatedUser(){
+
+    @AfterEach
+    public void tearDown(){
+        if(driver != null)
+            driver.quit();
+    }
+    public void loginWithCreatedUser(String fileName){
 
         User user = new User();
         user = user.readUserData();
@@ -72,9 +84,80 @@ public class UserLoginTest {
 
         driver.findElement(By.xpath("//div[@class='listbox']/ul[@class='list']/li/a[@href='/digital-downloads']")).click();
 
+        String content = readData(fileName);
+
+        String[] items = content.split("\n");
+
+        String previousPage = driver.getCurrentUrl();
+
+        for(String item : items){
+            if(item.equals("3rd Album")) {
+                driver.findElement(By.xpath("//h2/a[text()='" + item + "']")).click();
+                driver.findElement(By.xpath("//div/input[@id='add-to-cart-button-53']")).click();
+            }
+            else{
+                driver.findElement(By.xpath("//h2/a[text()='" + item + "']")).click();
+                driver.findElement(By.xpath("//div/input[@id='add-to-cart-button-51']"));
+            }
+
+            try {
+                Thread.sleep(1000); // 1000 milliseconds = 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            driver.get(previousPage);
+        }
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/ul/li/a/span[text()='Shopping cart']"))).click();
+        driver.findElement(By.id("termsofservice")).click();
+        driver.findElement(By.id("checkout")).click();
 
 
+        try{
+            driver.findElement(By.id("billing-address-select"));
+        }catch(Exception e){
+            driver.findElement(By.id("BillingNewAddress_CountryId")).click();
+            driver.findElement(By.xpath("//option[text()='Lithuania']")).click();
+            driver.findElement(By.id("BillingNewAddress_City")).sendKeys("Vilnius");
+            driver.findElement(By.id("BillingNewAddress_Address1")).sendKeys("Gedimino pr. 1");
+            driver.findElement(By.id("BillingNewAddress_ZipPostalCode")).sendKeys("LT-01103");
+            driver.findElement(By.id("BillingNewAddress_PhoneNumber")).sendKeys("+37060000000");
+            driver.findElement(By.cssSelector("input[value='Continue']")).click();
+        }
+
+        WebElement continueButtonn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@class='button-1 new-address-next-step-button']")));
+        continueButtonn.click();
+
+        By continueButtonSelector = By.xpath("//input[@value='Continue' and @class='button-1 payment-method-next-step-button']");
+        WebElement continueButton = driver.findElement(continueButtonSelector);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueButton);
+        continueButton = wait.until(ExpectedConditions.elementToBeClickable(continueButtonSelector));
+        continueButton.click();
+
+        WebElement continueButton2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Continue' and @class='button-1 payment-info-next-step-button']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueButton2);
+        continueButton2.click();
+
+        WebElement confirmButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Confirm' and @class='button-1 confirm-order-next-step-button']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", confirmButton);
+        confirmButton.click();
 
     }
+
+    //read file data1.txt and return the content
+    public String readData(String fileName){
+        String content = "";
+        try{
+            Scanner scanner = new Scanner(new File(fileName));
+            while(scanner.hasNextLine()){
+                content += scanner.nextLine() + "\n";
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return content;
+    }
+
 
 }

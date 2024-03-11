@@ -20,19 +20,23 @@ public class Main {
 //        driver = task2.task2();
 //        task2.quitDriver(driver);
 
-//        UserCreationTest userCreationTest = new UserCreationTest();
-//        userCreationTest.setUp();
-//        userCreationTest.createUser();
-//        userCreationTest.tearDown();
+        UserCreationTest userCreationTest = new UserCreationTest();
+        userCreationTest.setUp();
+        userCreationTest.createUser();
+        userCreationTest.tearDown();
 
         User user = new User();
         user.readUserData();
 
-//        userCreationTest.tearDown();
+        userCreationTest.tearDown();
 
         UserLoginTest userLoginTest = new UserLoginTest();
         userLoginTest.setUp();
-        userLoginTest.loginWithCreatedUser();
+        userLoginTest.loginWithCreatedUser("data1.txt");
+        userLoginTest.tearDown();
+        userLoginTest.setUp();
+        userLoginTest.loginWithCreatedUser("data2.txt");
+        userLoginTest.tearDown();
 
 
 

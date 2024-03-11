@@ -86,7 +86,7 @@ public class UserCreationTest{
         driver.findElement(By.id("FirstName")).sendKeys("Lempa");
         driver.findElement(By.id("LastName")).sendKeys("IsIkea");
 
-        int randomInt = (int) (Math.random() * 1000 + 1);
+        int randomInt = (int) (Math.random() * 10000 + 1);
         String emailString = "vailitismanotetis" + randomInt + "@gmail.com";
         driver.findElement(By.id("Email")).sendKeys(emailString);
         driver.findElement(By.id("Password")).sendKeys("slaptas");
