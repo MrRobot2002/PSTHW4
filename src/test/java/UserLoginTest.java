@@ -138,17 +138,14 @@ public class UserLoginTest {
             driver.findElement(By.cssSelector("input[value='Continue']")).click();
         }
 
-        WebElement continueButtonn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Continue' and @class='button-1 payment-method-next-step-button']")));
+        WebElement continueButtonn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@class='button-1 new-address-next-step-button']")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueButtonn);
         continueButtonn.click();
 
         //input[@class='button-1 new-address-next-step-button']
 
-        By continueButtonSelector = By.xpath("//input[@value='Continue' and @class='button-1 payment-method-next-step-button']");
-        WebElement continueButton = driver.findElement(continueButtonSelector);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueButton);
-        continueButton = wait.until(ExpectedConditions.elementToBeClickable(continueButtonSelector));
-        continueButton.click();
+        WebElement paymentMethodContinueButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@class='button-1 payment-method-next-step-button']")));
+        paymentMethodContinueButton.click();
 
         WebElement continueButton2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Continue' and @class='button-1 payment-info-next-step-button']")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueButton2);
