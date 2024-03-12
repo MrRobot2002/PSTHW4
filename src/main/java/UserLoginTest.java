@@ -138,7 +138,8 @@ public class UserLoginTest {
             driver.findElement(By.cssSelector("input[value='Continue']")).click();
         }
 
-        WebElement continueButtonn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@class='button-1 new-address-next-step-button']")));
+        WebElement continueButtonn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Continue' and @class='button-1 payment-method-next-step-button']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueButtonn);
         continueButtonn.click();
 
         By continueButtonSelector = By.xpath("//input[@value='Continue' and @class='button-1 payment-method-next-step-button']");
