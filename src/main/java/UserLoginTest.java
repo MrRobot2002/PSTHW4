@@ -143,6 +143,7 @@ public class UserLoginTest {
         continueButtonn.click();
 
         WebElement paymentMethodContinueButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@class='button-1 payment-method-next-step-button']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", paymentMethodContinueButton);
         paymentMethodContinueButton.click();
 
         WebElement continueButton2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Continue' and @class='button-1 payment-info-next-step-button']")));
