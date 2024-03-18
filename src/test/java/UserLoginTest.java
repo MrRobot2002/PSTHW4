@@ -39,6 +39,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -153,6 +154,13 @@ public class UserLoginTest {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", confirmButton);
         confirmButton.click();
 
+        WebElement orderConfirmation = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='title']")));
+
+        Assert.assertEquals("Your order has been successfully processed!", orderConfirmation.getText());
+
+
+
     }
 
     //read file data1.txt and return the content
@@ -171,6 +179,9 @@ public class UserLoginTest {
         }
         return contentBuilder.toString();
     }
+
+
+
 
     @Test
     public void Test1(){
